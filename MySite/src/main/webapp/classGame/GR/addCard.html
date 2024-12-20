@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matching Card Game!</title>
+    <link rel="stylesheet" href="CardStyle.css"> <!-- CSS 코드와 연결되는 부분 -->
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet"> <!-- 글씨 폰트 바꾸기 -->
+</head>
+<body>
+    <div class="header">
+        <h1>~ 카드 매칭 게임 ~</h1>					<!-- 헤더의 글씨 -->
+    </div>
+
+    <div class="game-board">
+        <div class="card" data-card="1">🍀</div>
+        <div class="card" data-card="1">🍀</div> <!-- 기본 카드 만듦 -->
+        <div class="card" data-card="2">🌟</div>
+        <div class="card" data-card="2">🌟</div>
+        <div class="card" data-card="3">🐰</div>
+        <div class="card" data-card="3">🐰</div>
+        <div class="card" data-card="4">🌊</div>
+        <div class="card" data-card="4">🌊</div>
+        <div class="card" data-card="5">💖</div>
+        <div class="card" data-card="5">💖</div>
+        <div class="card" data-card="6">🎉</div>
+        <div class="card" data-card="6">🎉</div>
+    </div>
+
+    <div class="footer">
+        <button id="restart-button">다시 시작!</button> <!-- 게임을 다시 시작(카드위치가 섞임)하는 버튼 -->
+        <button id="difficulty-button">난이도↑</button> <!-- 게임의 난이도를 높이는 버튼 (버튼을 누르면 카드가 추가되어 난이도 상승) -->
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="CardClick.js"></script>		<!-- JS 코드와 연결되는 부분 -->
+</body>
+</html>

@@ -1,0 +1,34 @@
+@charset "UTF-8";
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif;
+}
+
+canvas {
+    border: 2px solid #000;
+    background-color: #fafafa;
+}
+
+button {
+    font-size: 16px;
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50; /* 기본 배경색 */
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s; /* 애니메이션 효과 */
+}
+
+button:hover {
+    background-color: #45a049; /* 호버 시 배경색 */
+    transform: scale(1.05); /* 약간 확대 */
+}
+
+button:active {
+    background-color: #3e8e41; /* 클릭 시 배경색 */
+    transform: scale(0.95); /* 클릭 시 살짝 축소 */
+}
