@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.ac.kopo.dao.LeaderboardDAO">
+
+    <!-- ResultMap 정의 -->
+	<resultMap id="LeaderboardResultMap" type="kr.ac.kopo.vo.LeaderboardVO">
+	    <id property="id" column="id" />
+	    <result property="userId" column="user_id" />
+	    <result property="gameId" column="game_id" />
+	    <result property="score" column="score" />
+	    <result property="recordedAt" column="recorded_at" javaType="java.util.Date" />
+	</resultMap>
+
+
+    <!-- 점수 기록 추가 -->
+    <insert id="insertScore" parameterType="kr.ac.kopo.vo.LeaderboardVO">
+        INSERT INTO t_leaderboard (user_id, game_id, score)
+        VALUES (#{userId}, #{gameId}, #{score})
+    </insert>
+
+    <!-- 게임 ID로 게임 이름 조회 -->
+    <select id="getGameNameById" parameterType="int" resultType="string">
+        SELECT game_title FROM t_game WHERE game_id = #{gameId}
+    </select>
+
+    <!-- 특정 게임의 상위 점수 조회 -->
+    <select id="getTopScoresById" parameterType="map" resultMap="LeaderboardResultMap">
+        SELECT id, user_id, game_id, score, recorded_at
+        FROM t_leaderboard
+        WHERE game_id = #{gameId}
+        ORDER BY score DESC, recorded_at ASC
+        FETCH FIRST #{limit} ROWS ONLY
+    </select>
+    
+	<select id="getGameIdByTitle" parameterType="string" resultType="int">
+	    SELECT game_id FROM T_GAME WHERE game_title LIKE #{gameTitle}
+	</select>
+
+    
+
+</mapper>

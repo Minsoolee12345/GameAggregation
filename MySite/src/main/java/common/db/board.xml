@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.ac.kopo.dao.BoardDAO">
+
+    <!-- 게시판 목록 조회 -->
+    <select id="selectAll" resultType="kr.ac.kopo.vo.BoardVO">
+        SELECT no, title, writer, content, view_cnt, 
+               TO_CHAR(reg_date, 'YYYY-MM-DD') AS regDate,
+               game_id
+        FROM t_board
+        ORDER BY reg_date DESC
+    </select>
+
+    <!-- 게시글 번호로 조회 -->
+	<select id="selectBoardByNo" parameterType="int" resultType="kr.ac.kopo.vo.BoardVO">
+	    SELECT no, title, writer, content, view_cnt AS viewCnt,
+	           TO_CHAR(reg_date, 'YYYY-MM-DD') AS regDate,
+	           game_id AS gameId
+	    FROM t_board
+	    WHERE no = #{no}
+	</select>
+
+
+    <!-- 게시글 삽입 -->
+    <insert id="insertBoard" parameterType="kr.ac.kopo.vo.BoardVO">
+        INSERT INTO t_board (no, title, writer, content, view_cnt, reg_date, game_id)
+        VALUES (
+            seq_t_board_no.nextval,
+            #{title},
+            #{writer},
+            #{content},
+            #{viewCnt},
+            SYSDATE,
+            #{gameId,jdbcType=INTEGER}
+        )
+    </insert>
+
+    <!-- 게시글 수정 -->
+    <update id="updateBoard" parameterType="kr.ac.kopo.vo.BoardVO">
+        UPDATE t_board
+        SET title = #{title}, content = #{content}, view_cnt = #{viewCnt}, game_id = #{gameId,jdbcType=INTEGER}
+        WHERE no = #{no}
+    </update>
+
+    <!-- 게시글 삭제 -->
+    <delete id="deleteBoard" parameterType="int">
+        DELETE FROM t_board
+        WHERE no = #{no}
+    </delete>
+
+    <!-- 페이징된 게시글 목록 조회 -->
+    <select id="getPagedBoardList" parameterType="map" resultType="kr.ac.kopo.vo.BoardVO">
+        SELECT *
+        FROM (
+            SELECT a.*, ROW_NUMBER() OVER (ORDER BY reg_date DESC) AS rnum
+            FROM t_board a
+        )
+        WHERE rnum BETWEEN #{startRow} AND #{endRow}
+    </select>
+
+    <!-- 전체 게시글 개수 조회 -->
+    <select id="getTotalBoardCount" resultType="int">
+        SELECT COUNT(*)
+        FROM t_board
+    </select>
+
+    <!-- 조회수 증가 -->
+    <update id="incrementViewCount" parameterType="int">
+        UPDATE t_board
+        SET view_cnt = view_cnt + 1
+        WHERE no = #{no}
+    </update>
+
+</mapper>

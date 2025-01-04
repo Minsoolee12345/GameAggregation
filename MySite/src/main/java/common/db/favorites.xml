@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.ac.kopo.dao.FavoritesDAO">
+
+	<resultMap id="FavoritesResultMap"
+		type="kr.ac.kopo.vo.FavoritesVO">
+		<id property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="gameId" column="game_id" />
+	</resultMap>
+
+	<resultMap id="gameMap" type="kr.ac.kopo.vo.GameVO">
+		<id property="gameId" column="game_id" />
+		<result property="gameUrl" column="game_url" />
+		<result property="gameTitle" column="game_title" />
+		<result property="gameIntro" column="game_intro" />
+	</resultMap>
+	
+	<!-- 즐겨찾기 추가 -->
+	<insert id="addFavorite">
+		INSERT INTO t_favorites (user_id, game_id)
+		VALUES (#{userId}, #{gameId})
+	</insert>
+
+	<!-- 즐겨찾기 삭제 -->
+	<delete id="removeFavorite">
+		DELETE FROM t_favorites
+		WHERE user_id = #{userId} AND game_id = #{gameId}
+	</delete>
+
+	<!-- 특정 유저의 즐겨찾기 게임 정보 조회 -->
+	<select id="getFavoriteGamesByUser" parameterType="String" resultMap="gameMap">
+	    SELECT g.game_id, g.game_title, g.game_url, g.game_intro
+	    FROM t_favorites f
+	    JOIN t_game g ON f.game_id = g.game_id
+	    WHERE f.user_id = #{userId}
+	</select>
+
+
+	<!-- 특정 유저-게임 조합이 존재하는지 확인하는 쿼리 -->
+	<select id="countFavoriteByUserAndGame" parameterType="map"
+		resultType="int">
+		SELECT COUNT(*)
+		FROM t_favorites
+		WHERE user_id = #{userId}
+		AND game_id = #{gameId}
+	</select>
+</mapper>
